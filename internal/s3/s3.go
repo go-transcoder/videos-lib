@@ -83,8 +83,13 @@ func (s3BucketApi S3BucketApi) UploadVideoDir(videoDirPath string, prefix string
 	return nil
 }
 
-func (s3BucketApi S3BucketApi) UploadMultipart(file multipart.File, path string, fileName string) (string, error) {
-	defer file.Close()
+func (s3BucketApi S3BucketApi) UploadMultipart(file multipart.FileHeader, path string, fileName string) (string, error) {
+	myFile, err := file.Open()
+
+	if err != nil {
+		return "", err
+	}
+	defer myFile.Close()
 
 	// first videos to tmp
 	tmpFile, err := os.CreateTemp("", fileName)
@@ -95,7 +100,7 @@ func (s3BucketApi S3BucketApi) UploadMultipart(file multipart.File, path string,
 	defer os.Remove(tmpFile.Name()) // Clean up
 
 	// copy the multipart to the tmp file
-	_, err = io.Copy(tmpFile, file)
+	_, err = io.Copy(tmpFile, myFile)
 
 	if err != nil {
 		return "", err

@@ -10,7 +10,7 @@ import (
 	"mime/multipart"
 )
 
-func UploadMultipart(cfg aws.Config, bucketName string, file multipart.File, path string, name string) (filename string, err error) {
+func UploadMultipart(cfg aws.Config, bucketName string, file multipart.FileHeader, path string, name string) (filename string, err error) {
 	// TODO: the creation of the S3BucketApi should be a singleton
 	// 	create a method that gets the S3BucketApi if already created
 	s3BucketApi := s3_internal.S3BucketApi{

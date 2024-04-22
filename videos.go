@@ -1,6 +1,7 @@
 package videos_lib
 
 import (
+	_ "embed"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/go-transcoder/videos-lib/internal/ffmpeg"
@@ -39,10 +40,13 @@ func UploadVideoDir(cfg aws.Config, bucketName string, videoDirPath string, pref
 	return s3BucketApi.UploadVideoDir(videoDirPath, prefix)
 }
 
+//go:embed internal/ffmpeg/convert_video_cpu.sh
+var convertScript string
+
 func FfmpegTranscode(inputFile string, outputDir string) error {
 	var ffmpegApi ffmpeg.Command
 
-	return ffmpegApi.Exec(inputFile, outputDir)
+	return ffmpegApi.Exec(convertScript, inputFile, outputDir)
 }
 
 func ExtractThumbnails(inFileName, outputDir string) error {

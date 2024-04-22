@@ -8,10 +8,10 @@ import (
 
 type Command func(path, inputFile, outputDir string) error
 
-func (ffmpegApi Command) Exec(inputFile, outputDir string) error {
+func (ffmpegApi Command) Exec(convertScript, inputFile, outputDir string) error {
 	cmd := exec.Command(
 		"/bin/sh",
-		"./convert_video_cpu.sh",
+		convertScript,
 		inputFile,
 		outputDir,
 	)

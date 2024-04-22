@@ -1,16 +1,20 @@
 package ffmpeg
 
 import (
+	_ "embed"
 	"os"
 	"testing"
 )
+
+//go:embed convert_video_cpu.sh
+var convertScript string
 
 func TestFfmpegApi_FfmpegCommandExec(t *testing.T) {
 	var ffmpegApi Command
 
 	outputPath := "../../resources/test/output"
 
-	err := ffmpegApi.Exec("../../resources/test/sample_test.mp4", outputPath)
+	err := ffmpegApi.Exec(convertScript, "../../resources/test/sample_test.mp4", outputPath)
 
 	if err != nil {
 		t.Fatalf("ffmpegCommandExec error: , %v", err)

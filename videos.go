@@ -31,6 +31,15 @@ func DownloadFile(cfg aws.Config, bucketName string, objectKey string, fileName 
 	return s3BucketApi.DownloadFile(objectKey, fileName)
 }
 
+func DeleteFile(cfg aws.Config, bucketName string, objectKey string) error {
+	s3BucketApi := s3_internal.S3BucketApi{
+		S3Client:   s3.NewFromConfig(cfg),
+		BucketName: bucketName,
+	}
+
+	return s3BucketApi.DeleteFile(objectKey)
+}
+
 func UploadVideoDir(cfg aws.Config, bucketName string, videoDirPath string, prefix string) error {
 	s3BucketApi := s3_internal.S3BucketApi{
 		S3Client:   s3.NewFromConfig(cfg),

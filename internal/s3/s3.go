@@ -17,6 +17,19 @@ type S3BucketApi struct {
 	BucketName string
 }
 
+func (s3BucketApi S3BucketApi) DeleteFile(objectKey string) error {
+	_, err := s3BucketApi.S3Client.DeleteObject(context.TODO(), &s3.DeleteObjectInput{
+		Bucket: aws.String(s3BucketApi.BucketName),
+		Key:    aws.String(objectKey),
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (s3BucketApi S3BucketApi) DownloadFile(objectKey string, fileName string) error {
 	result, err := s3BucketApi.S3Client.GetObject(context.TODO(), &s3.GetObjectInput{
 		Bucket: aws.String(s3BucketApi.BucketName),
